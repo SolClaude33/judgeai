@@ -141,3 +141,8 @@ The system uses keyword-based heuristic analysis to detect valid legal case desc
   - Logging when AI returns malformed analytics or corrections needed
   - Only generates analytics when truly relevant (legal case detected)
   - Performance: ~6-10 seconds per message (dual AI calls: response + analytics)
+- **Vercel API Endpoint Fix**: Corrected serverless function routing for production deployment
+  - Changed route in api/index.ts from `/api/chat` to `/chat`
+  - Vercel automatically maps api/index.ts to `/api/`, so internal routes must be relative
+  - Frontend calls `/api/chat` → Vercel rewrites to `/api` (executes api/index.ts) → Express handles `/chat`
+  - Resolved "Unexpected token" JSON parsing errors from incorrect route mapping
