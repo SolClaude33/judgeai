@@ -1,0 +1,56 @@
+08:01:23.401 Running build in Washington, D.C., USA (East) – iad1
+08:01:23.402 Build machine configuration: 2 cores, 8 GB
+08:01:23.524 Cloning github.com/Shilder25/czjudge (Branch: main, Commit: c5bc8af)
+08:01:23.525 Previous build caches not available.
+08:01:24.838 Cloning completed: 1.314s
+08:01:25.654 Running "vercel build"
+08:01:26.129 Vercel CLI 48.8.0
+08:01:26.904 Installing dependencies...
+08:01:31.300 npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+08:01:32.038 npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+08:01:32.066 npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+08:01:33.291 npm warn deprecated three-mesh-bvh@0.7.8: Deprecated due to three.js version incompatibility. Please use v0.8.0, instead.
+08:01:38.656 
+08:01:38.657 added 572 packages in 11s
+08:01:38.657 
+08:01:38.658 70 packages are looking for funding
+08:01:38.658   run `npm fund` for details
+08:01:38.864 
+08:01:38.865 > rest-express@1.0.0 build
+08:01:38.865 > vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+08:01:38.866 
+08:01:39.135 [36mvite v5.4.20 [32mbuilding for production...[36m[39m
+08:01:39.188 transforming...
+08:01:39.423 Browserslist: browsers data (caniuse-lite) is 13 months old. Please run:
+08:01:39.425   npx update-browserslist-db@latest
+08:01:39.425   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+08:01:40.397 
+08:01:40.397 A PostCSS plugin did not pass the `from` option to `postcss.parse`. This may cause imported assets to be incorrectly transformed. If you've recently added a PostCSS plugin that raised this warning, please contact the package author to fix the issue.
+08:01:46.881 [32m✓[39m 2018 modules transformed.
+08:01:47.448 rendering chunks...
+08:01:47.465 computing gzip size...
+08:01:47.493 [2m../dist/public/[22m[32mindex.html                                                     [39m[1m[2m    2.14 kB[22m[1m[22m[2m │ gzip:   0.80 kB[22m
+08:01:47.494 [2m../dist/public/[22m[2massets/[22m[32mimage-removebg-preview (30)_1759978567238-DFltrYEg.png  [39m[1m[2m   99.88 kB[22m[1m[22m
+08:01:47.494 [2m../dist/public/[22m[2massets/[22m[32mimage_1762076949888-BuDq0LnV.png                        [39m[1m[2m  366.04 kB[22m[1m[22m
+08:01:47.495 [2m../dist/public/[22m[2massets/[22m[32mimage_1761243437671-V6EWUysX.png                        [39m[1m[2m  379.57 kB[22m[1m[22m
+08:01:47.495 [2m../dist/public/[22m[2massets/[22m[32mimage_1762078602247-Dy2P0bYG.png                        [39m[1m[2m2,877.73 kB[22m[1m[22m
+08:01:47.495 [2m../dist/public/[22m[2massets/[22m[35mindex-D29U-YV6.css                                      [39m[1m[2m   81.64 kB[22m[1m[22m[2m │ gzip:  13.27 kB[22m
+08:01:47.495 [2m../dist/public/[22m[2massets/[22m[36mindex-DJJ-G1I_.js                                       [39m[1m[33m  962.77 kB[39m[22m[2m │ gzip: 270.74 kB[22m
+08:01:47.495 [33m
+08:01:47.495 (!) Some chunks are larger than 500 kB after minification. Consider:
+08:01:47.495 - Using dynamic import() to code-split the application
+08:01:47.496 - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+08:01:47.496 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+08:01:47.498 [32m✓ built in 8.33s[39m
+08:01:47.553 
+08:01:47.553   dist/index.js  26.5kb
+08:01:47.554 
+08:01:47.554 ⚡ Done in 5ms
+08:01:48.236 Using TypeScript 5.6.3 (local user-provided)
+08:01:54.202 server/emotion-analyzer.ts(52,5): error TS2322: Type '"talking"' is not assignable to type '"idle" | "analyzing" | "thinking_deep" | "presenting" | "approving" | "concerned" | "gavel_tap"'.
+08:01:54.203 server/emotion-analyzer.ts(59,3): error TS2322: Type '"talking"' is not assignable to type '"idle" | "analyzing" | "thinking_deep" | "presenting" | "approving" | "concerned" | "gavel_tap"'.
+08:01:54.203 
+08:01:56.192 Build Completed in /vercel/output [29s]
+08:01:56.559 Deploying outputs...
+08:02:04.742 Deployment completed
+08:02:05.564 Creating build cache...

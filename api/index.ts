@@ -27,7 +27,7 @@ const chatRequestSchema = z.object({
   walletAddress: z.string().optional(),
 });
 
-app.post('/api/chat', async (req, res) => {
+app.post('/chat', async (req, res) => {
   try {
     const validatedData = chatRequestSchema.parse(req.body);
     const { content, username, language, walletAddress } = validatedData;
