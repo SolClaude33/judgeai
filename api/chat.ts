@@ -143,19 +143,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
     
     // Ensure we always return valid JSON
-    return res.status(500).json({ 
-      error: error instanceof Error ? error.message : 'Internal server error' 
-    });
-  } catch (outerError: any) {
-    // Catch any unhandled errors that might cause FUNCTION_INVOCATION_FAILED
-    console.error('Unhandled error in handler:', outerError);
-    
-    // Ensure headers are set before sending response
     if (!res.headersSent) {
-      res.setHeader('Content-Type', 'application/json');
-      res.status(500).json({ 
-        error: 'Internal server error',
-        message: outerError?.message || 'Unknown error occurred'
+      return res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Internal server error' 
       });
     }
   }

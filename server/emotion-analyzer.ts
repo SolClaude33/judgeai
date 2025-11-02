@@ -46,15 +46,23 @@ export function analyzeEmotion(text: string): EmotionType {
 
   const maxEmotion = Object.entries(scores).reduce((max, [emotion, score]) => {
     return score > max.score ? { emotion, score } : max;
-  }, { emotion: 'talking', score: 0 });
+  }, { emotion: 'idle', score: 0 });
 
   if (maxEmotion.score === 0) {
-    return 'talking';
+    return 'idle';
   }
 
   if (maxEmotion.score >= 2) {
-    return maxEmotion.emotion as EmotionType;
+    // Map emotions to valid EmotionType values
+    if (maxEmotion.emotion === 'celebrating') {
+      return 'approving';
+    } else if (maxEmotion.emotion === 'angry') {
+      return 'concerned';
+    } else if (maxEmotion.emotion === 'thinking') {
+      return 'thinking_deep';
+    }
+    return 'idle';
   }
 
-  return 'talking';
+  return 'idle';
 }
