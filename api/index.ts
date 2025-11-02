@@ -49,8 +49,36 @@ app.post('/chat', async (req, res) => {
     // Update last message time
     userLastMessageTime.set(sessionKey, now);
 
-    // Generate AI response
-    const aiResponse = await generateAIResponse(content, language);
+    // Generate AI response with proper error handling
+    let aiResponse;
+    try {
+      aiResponse = await generateAIResponse(content, language);
+    } catch (aiError: any) {
+      console.error('Error generating AI response:', aiError);
+      // Return a safe error response in JSON format
+      const errorMessage = language === 'zh' 
+        ? '抱歉，AI 服务暂时不可用。请稍后再试。' 
+        : 'Sorry, the AI service is temporarily unavailable. Please try again later.';
+      
+      return res.status(500).json({
+        error: errorMessage,
+        userMessage: {
+          id: Date.now().toString(),
+          message: content,
+          sender: 'user',
+          username: username || 'Anonymous',
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        },
+        czMessage: {
+          id: (Date.now() + 1).toString(),
+          message: errorMessage,
+          sender: 'cz',
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          emotion: 'idle',
+        },
+        analytics: null,
+      });
+    }
 
     // Build response messages
     const userMessage = {
@@ -71,25 +99,41 @@ app.post('/chat', async (req, res) => {
     };
 
     // Return complete response
-    res.json({
+    return res.json({
       userMessage,
       czMessage,
       analytics: aiResponse.analytics || null,
     });
   } catch (error) {
     console.error('Error in /api/chat:', error);
+    
+    // Always return valid JSON, even on errors
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: 'Invalid request data', details: error.errors });
+      return res.status(400).json({ 
+        error: 'Invalid request data', 
+        details: error.errors 
+      });
     }
-    res.status(500).json({ error: 'Internal server error' });
+    
+    // Ensure we always return valid JSON
+    return res.status(500).json({ 
+      error: error instanceof Error ? error.message : 'Internal server error' 
+    });
   }
 });
 
-// Error handler
+// Error handler - ensure all errors return valid JSON
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   const status = err.status || err.statusCode || 500;
   const message = err.message || "Internal Server Error";
-  res.status(status).json({ message });
+  
+  // Ensure response headers are set correctly
+  if (!res.headersSent) {
+    res.status(status).json({ 
+      error: message,
+      status 
+    });
+  }
 });
 
 // Export the Express app as Vercel serverless function

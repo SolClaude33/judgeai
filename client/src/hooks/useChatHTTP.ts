@@ -102,13 +102,27 @@ export function useChatHTTP({ onMessage }: UseChatHTTPOptions) {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        let errorData;
+        const contentType = response.headers.get('content-type');
+        
+        // Try to parse JSON, but handle cases where response might not be JSON
+        try {
+          if (contentType && contentType.includes('application/json')) {
+            errorData = await response.json();
+          } else {
+            const text = await response.text();
+            errorData = { error: text || 'Failed to send message' };
+          }
+        } catch (parseError) {
+          // If parsing fails, create a safe error object
+          errorData = { error: 'Server error: Invalid response format' };
+        }
         
         // Handle rate limiting - queue error message in sequence
         if (response.status === 429) {
           queueResponse(sequenceId, [{
             type: 'error',
-            data: { message: errorData.error }
+            data: { message: errorData.error || 'Please wait before sending another message.' }
           }]);
           setIsSending(false);
           return;
@@ -117,7 +131,20 @@ export function useChatHTTP({ onMessage }: UseChatHTTPOptions) {
         throw new Error(errorData.error || 'Failed to send message');
       }
 
-      const data = await response.json();
+      // Parse JSON response with error handling
+      let data;
+      try {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          data = await response.json();
+        } else {
+          const text = await response.text();
+          throw new Error(`Invalid response format: ${text.substring(0, 100)}`);
+        }
+      } catch (parseError) {
+        console.error('Error parsing JSON response:', parseError);
+        throw new Error('Invalid response from server. Please try again.');
+      }
 
       // Queue CZ response and analytics in order
       setTimeout(() => {
