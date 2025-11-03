@@ -4,7 +4,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { useState } from "react";
 import { useWallet } from "@/contexts/WalletContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import czLogo from "@assets/image_1762076949888.png";
+import baiLogo from "@assets/frame-avatar.png";
 
 export default function StreamHeader() {
   const [isDark, setIsDark] = useState(false);
@@ -22,7 +22,7 @@ export default function StreamHeader() {
         <div className="flex items-center gap-4 flex-shrink-0">
           <div className="relative flex items-center gap-3">
             <div className="relative h-14 w-14 rounded-full overflow-hidden bg-card shadow-md">
-              <img src={czLogo} alt="BAI Live - BNB Chain AI" className="h-full w-full object-cover" />
+              <img src={baiLogo} alt="BAI Live - BNB Chain AI" className="h-full w-full object-cover" />
             </div>
             <div>
               <h1 className="text-2xl font-black font-[Space_Grotesk] text-foreground flex items-center gap-2">
