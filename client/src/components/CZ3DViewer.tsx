@@ -109,10 +109,11 @@ export default function CZ3DViewer({ emotion = 'idle' }: CZ3DViewerProps) {
       console.warn('3D model loading timed out - showing UI without 3D');
     }, 20000);
 
+    // Load the biped character model
     gltfLoader.load(
-      '/legal-avatar-idle.glb',
+      '/biped-character.glb',
       (gltf) => {
-        console.log('✅ Loaded Legal Tech Avatar model');
+        console.log('✅ Loaded Biped Character model');
         const model = gltf.scene;
         
         const box = new THREE.Box3().setFromObject(model);
@@ -162,20 +163,40 @@ export default function CZ3DViewer({ emotion = 'idle' }: CZ3DViewerProps) {
         });
 
         scene.add(model);
-        console.log('✨ Legal Avatar added to scene at position:', model.position);
+        console.log('✨ Biped Character added to scene at position:', model.position);
 
         const mixer = new THREE.AnimationMixer(model);
         
+        // Try to load and play animations
         if (gltf.animations && gltf.animations.length > 0) {
           const clip = gltf.animations[0];
           modelRef.current = { model, mixer, clip };
           
           const action = mixer.clipAction(clip);
           action.play();
-          console.log('▶️ Playing idle animation');
+          console.log(`▶️ Playing animation: ${clip.name || 'default'}`);
+          console.log(`📊 Total animations in model: ${gltf.animations.length}`);
         } else {
-          modelRef.current = { model, mixer, clip: new THREE.AnimationClip('default', -1, []) };
-          console.log('ℹ️ No animations found in model');
+          // If no animations in base model, try loading walking animation
+          console.log('ℹ️ No animations found in base model, trying to load walking animation...');
+          gltfLoader.load(
+            '/biped-walking.glb',
+            (walkingGltf) => {
+              if (walkingGltf.animations && walkingGltf.animations.length > 0) {
+                const walkingClip = walkingGltf.animations[0];
+                const walkingAction = mixer.clipAction(walkingClip);
+                walkingAction.play();
+                modelRef.current = { model, mixer, clip: walkingClip };
+                console.log(`▶️ Playing walking animation: ${walkingClip.name || 'default'}`);
+              }
+            },
+            undefined,
+            (err) => console.warn('Could not load walking animation:', err)
+          );
+          
+          if (!modelRef.current) {
+            modelRef.current = { model, mixer, clip: new THREE.AnimationClip('default', -1, []) };
+          }
         }
         
         if (loadTimeoutRef.current !== null) {
@@ -186,7 +207,7 @@ export default function CZ3DViewer({ emotion = 'idle' }: CZ3DViewerProps) {
       },
       undefined,
       (error) => {
-        console.error('Error loading Legal Avatar model:', error);
+        console.error('Error loading Biped Character model:', error);
         if (loadTimeoutRef.current !== null) {
           clearTimeout(loadTimeoutRef.current);
           loadTimeoutRef.current = null;
@@ -275,7 +296,7 @@ export default function CZ3DViewer({ emotion = 'idle' }: CZ3DViewerProps) {
             </div>
           </div>
           <p className="text-sm text-muted-foreground animate-pulse">
-            Loading Legal Tech Avatar...
+            Loading Biped Character...
           </p>
         </div>
       )}
