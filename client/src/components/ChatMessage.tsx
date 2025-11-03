@@ -24,7 +24,7 @@ export default function ChatMessage({ message, sender, timestamp, username }: Ch
       <Avatar className={`h-11 w-11 flex-shrink-0 ${isCZ ? 'ring-2 ring-primary/30 ring-offset-2 ring-offset-background shadow-sm' : 'ring-2 ring-secondary/30 ring-offset-2 ring-offset-background shadow-sm'}`}>
         {isCZ ? (
           <>
-            <AvatarImage src={czAvatar} alt="CZ" className="object-cover" />
+            <AvatarImage src={czAvatar} alt="BAI Live" className="object-cover" />
             <AvatarFallback className="bg-primary">
               <Bot className="h-5 w-5 text-primary-foreground" />
             </AvatarFallback>
@@ -39,7 +39,7 @@ export default function ChatMessage({ message, sender, timestamp, username }: Ch
       <div className={`flex flex-col gap-1.5 max-w-[75%] ${isCZ ? 'items-start' : 'items-end'}`}>
         <div className="flex items-center gap-2 px-1">
           <span className={`text-sm font-bold ${isCZ ? 'text-foreground' : 'text-foreground'}`}>
-            {isCZ ? 'CZ AI' : username || 'Anonymous'}
+            {isCZ ? 'BAI Live' : username || 'Anonymous'}
           </span>
           <span className="text-xs text-muted-foreground font-medium">{timestamp}</span>
         </div>

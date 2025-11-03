@@ -13,9 +13,9 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 const translations = {
   en: {
     // Header
-    'header.title': 'CZ Judge',
-    'header.subtitle': 'Legal Analysis AI on BNB Chain',
-    'header.tagline': 'Objective Case Insights',
+    'header.title': 'BAI Live',
+    'header.subtitle': 'The Real-Time Intelligence Feed',
+    'header.tagline': '',
     'header.learnMore': 'Learn More',
     'header.connectWallet': 'Connect Wallet',
     'header.connecting': 'Connecting...',
@@ -28,7 +28,7 @@ const translations = {
     'chat.placeholderNoWallet': 'Connect wallet to begin...',
     'chat.placeholderConnected': 'Describe your legal case...',
     'chat.placeholderConnecting': 'Connecting...',
-    'chat.welcomeMessage': "Welcome to CZ Judge Companion! I'm your objective legal analysis assistant built on BNB Chain. Describe any legal case, and I'll help you understand the key factors that influence outcomes. Connect your BNB wallet to begin!",
+    'chat.welcomeMessage': "Welcome to BAI Live! I'm your real-time intelligence assistant built on BNB Chain. Get instant insights and analysis on any topic. Connect your BNB wallet to begin!",
     'chat.analyticsReady': 'Case Analytics Ready',
     'chat.viewAnalytics': 'View Case Analysis',
     
@@ -82,9 +82,9 @@ const translations = {
   },
   zh: {
     // Header
-    'header.title': 'CZ法官',
-    'header.subtitle': 'BNB链上的法律分析AI',
-    'header.tagline': '客观的案件洞察',
+    'header.title': 'BAI Live',
+    'header.subtitle': '实时智能信息流',
+    'header.tagline': '',
     'header.learnMore': '了解更多',
     'header.connectWallet': '连接钱包',
     'header.connecting': '连接中...',
@@ -97,7 +97,7 @@ const translations = {
     'chat.placeholderNoWallet': '连接钱包开始...',
     'chat.placeholderConnected': '描述您的法律案件...',
     'chat.placeholderConnecting': '连接中...',
-    'chat.welcomeMessage': '欢迎来到CZ法官助手！我是您在BNB链上的客观法律分析助手。描述任何法律案件，我将帮助您了解影响结果的关键因素。连接您的BNB钱包开始！',
+    'chat.welcomeMessage': '欢迎来到BAI Live！我是您在BNB链上的实时智能助手。获取任何主题的即时洞察和分析。连接您的BNB钱包开始！',
     'chat.analyticsReady': '案件分析已准备好',
     'chat.viewAnalytics': '查看案件分析',
     

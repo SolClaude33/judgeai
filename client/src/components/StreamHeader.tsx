@@ -22,7 +22,7 @@ export default function StreamHeader() {
         <div className="flex items-center gap-4 flex-shrink-0">
           <div className="relative flex items-center gap-3">
             <div className="relative h-14 w-14 rounded-full overflow-hidden bg-card shadow-md">
-              <img src={czLogo} alt="CZ - BNB Chain AI" className="h-full w-full object-cover" />
+              <img src={czLogo} alt="BAI Live - BNB Chain AI" className="h-full w-full object-cover" />
             </div>
             <div>
               <h1 className="text-2xl font-black font-[Space_Grotesk] text-foreground flex items-center gap-2">
@@ -57,12 +57,12 @@ export default function StreamHeader() {
             data-testid="button-twitter-main"
           >
             <a
-              href="https://x.com/CZJUDGEAI"
+              href="https://x.com/BaiLiveBNB"
               target="_blank"
               rel="noopener noreferrer"
             >
               <FaXTwitter className="h-5 w-5" />
-              <span className="hidden sm:inline">Follow @CZJUDGEAI</span>
+              <span className="hidden sm:inline">Follow @BaiLiveBNB</span>
             </a>
           </Button>
         </div>

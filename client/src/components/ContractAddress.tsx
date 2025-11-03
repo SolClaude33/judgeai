@@ -16,7 +16,7 @@ export default function ContractAddress() {
               </h3>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Interact with CZ AI directly on the blockchain. This verified smart contract powers all AI interactions.
+              Interact with BAI Live directly on the blockchain. This verified smart contract powers all AI interactions.
             </p>
           </div>
         </div>
@@ -27,12 +27,12 @@ export default function ContractAddress() {
               <p className="text-base font-semibold text-foreground text-center leading-relaxed">
                 Contract Address will be announced on our Twitter{" "}
                 <a 
-                  href="https://twitter.com/CZJUDGEAI" 
+                  href="https://x.com/BaiLiveBNB" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-primary hover:underline font-bold"
                 >
-                  @CZJUDGEAI
+                  @BaiLiveBNB
                 </a>
               </p>
             </div>

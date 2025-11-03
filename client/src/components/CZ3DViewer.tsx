@@ -296,7 +296,7 @@ export default function CZ3DViewer({ emotion = 'idle' }: CZ3DViewerProps) {
             </div>
           </div>
           <p className="text-sm text-muted-foreground animate-pulse">
-            Loading Biped Character...
+            Loading BAI Live...
           </p>
         </div>
       )}
