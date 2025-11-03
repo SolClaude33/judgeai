@@ -4,8 +4,8 @@ import { GLTFLoader } from 'three-stdlib';
 import { OrbitControls } from 'three-stdlib';
 import { Sparkles } from "lucide-react";
 import type { EmotionType } from '@shared/schema';
-import czLoadingImage from '@assets/image_1761243437671.png';
-import courtroomBackground from '@assets/image_1762078602247.png';
+import czLoadingImage from '@assets/frame-avatar.png';
+import courtroomBackground from '@assets/frame-background.png';
 
 interface CZ3DViewerProps {
   emotion?: EmotionType;
@@ -86,7 +86,7 @@ export default function CZ3DViewer({ emotion = 'idle' }: CZ3DViewerProps) {
         backgroundPlane.position.set(1.0, 0.5, -3.5);
         scene.add(backgroundPlane);
         
-        console.log('✅ Courtroom background added');
+        console.log('✅ Frame background added');
       },
       undefined,
       (error) => {
