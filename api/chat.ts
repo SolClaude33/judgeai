@@ -6,7 +6,19 @@ let aiServiceModule: any = null;
 async function getAIResponse() {
   if (!aiServiceModule) {
     try {
-      aiServiceModule = await import("./ai-service");
+      // Try with .js extension first (required for Vercel ESM)
+      try {
+        aiServiceModule = await import("./ai-service.js");
+      } catch (e1) {
+        // Fallback to without extension
+        try {
+          aiServiceModule = await import("./ai-service");
+        } catch (e2) {
+          console.error('Failed to import ai-service with .js extension:', e1);
+          console.error('Failed to import ai-service without extension:', e2);
+          throw e2;
+        }
+      }
     } catch (error) {
       console.error('Failed to import ai-service module:', error);
       throw error;
