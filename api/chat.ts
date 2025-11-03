@@ -1,6 +1,20 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { generateAIResponse } from "../server/ai-service";
 import { z } from "zod";
+
+// Lazy import to avoid loading issues at module initialization
+let generateAIResponse: any = null;
+async function getGenerateAIResponse() {
+  if (!generateAIResponse) {
+    try {
+      const module = await import("../server/ai-service");
+      generateAIResponse = module.generateAIResponse;
+    } catch (error) {
+      console.error('Failed to import ai-service:', error);
+      throw error;
+    }
+  }
+  return generateAIResponse;
+}
 
 // Track last message time per user (5 second rate limit)
 const userLastMessageTime = new Map<string, number>();
@@ -15,8 +29,17 @@ const chatRequestSchema = z.object({
 });
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Initialize response headers early to prevent issues
+  const sendError = (status: number, error: string) => {
+    if (!res.headersSent) {
+      res.setHeader('Content-Type', 'application/json');
+      res.status(status).json({ error });
+    }
+  };
+
   // Wrap everything in try-catch to prevent FUNCTION_INVOCATION_FAILED
   try {
+    console.log('Handler invoked:', req.method, req.url);
     // Handle CORS preflight
     if (req.method === 'OPTIONS') {
       res.setHeader('Access-Control-Allow-Origin', '*');
@@ -76,7 +99,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Generate AI response with proper error handling
     let aiResponse;
     try {
-      aiResponse = await generateAIResponse(content, language);
+      const generateFn = await getGenerateAIResponse();
+      aiResponse = await generateFn(content, language);
     } catch (aiError: any) {
       console.error('Error generating AI response:', aiError);
       // Return a safe error response in JSON format
@@ -128,25 +152,35 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       czMessage,
       analytics: aiResponse.analytics || null,
     });
-  } catch (error) {
-    console.error('Error in /api/chat:', error);
-    
-    // Ensure response headers are set
-    res.setHeader('Content-Type', 'application/json');
+  } catch (error: any) {
+    console.error('Error in /api/chat handler:', error);
+    console.error('Error stack:', error?.stack);
+    console.error('Error name:', error?.name);
     
     // Always return valid JSON, even on errors
-    if (error instanceof z.ZodError) {
-      return res.status(400).json({ 
-        error: 'Invalid request data', 
-        details: error.errors 
-      });
-    }
-    
-    // Ensure we always return valid JSON
     if (!res.headersSent) {
-      return res.status(500).json({ 
-        error: error instanceof Error ? error.message : 'Internal server error' 
-      });
+      try {
+        if (error instanceof z.ZodError) {
+          return res.status(400).json({ 
+            error: 'Invalid request data', 
+            details: error.errors 
+          });
+        }
+        
+        const errorMessage = error instanceof Error 
+          ? error.message 
+          : typeof error === 'string' 
+          ? error 
+          : 'Internal server error';
+        
+        return res.status(500).json({ 
+          error: errorMessage,
+          type: error?.name || 'UnknownError'
+        });
+      } catch (responseError: any) {
+        // If even sending error response fails, log it
+        console.error('Failed to send error response:', responseError);
+      }
     }
   }
 }
