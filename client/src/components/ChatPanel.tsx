@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, Users, TrendingUp, Wifi, WifiOff, Lock, BarChart3 } from "lucide-react";
+import { Send, Users, TrendingUp, Wifi, WifiOff, Lock } from "lucide-react";
 import ChatMessage from "./ChatMessage";
 import { useChatHTTP } from "@/hooks/useChatHTTP";
 import { useWallet } from "@/contexts/WalletContext";
@@ -11,11 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { ChatMessage as ChatMessageType } from "@shared/schema";
 import gigglesLogo from '@assets/image-removebg-preview (30)_1759978567238.png';
 
-interface ChatPanelProps {
-  onOpenAnalytics?: () => void;
-}
-
-export default function ChatPanel({ onOpenAnalytics }: ChatPanelProps = {}) {
+export default function ChatPanel() {
   const { t, language } = useLanguage();
   const [messages, setMessages] = useState<ChatMessageType[]>([
     {
@@ -98,16 +94,6 @@ export default function ChatPanel({ onOpenAnalytics }: ChatPanelProps = {}) {
           fallbackTimeoutRef.current = null;
         }, 2000);
       }
-    } else if (message.type === 'case_analytics') {
-      // Add analytics notification message with clickable button
-      const analyticsMessage: ChatMessageType = {
-        id: `analytics-${Date.now()}`,
-        message: t('chat.analyticsReady'),
-        sender: "system",
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        isAnalyticsButton: true
-      };
-      setMessages(prev => [...prev, analyticsMessage]);
     } else if (message.type === 'error') {
       toast({
         variant: "destructive",
@@ -216,20 +202,7 @@ export default function ChatPanel({ onOpenAnalytics }: ChatPanelProps = {}) {
       <ScrollArea className="flex-1 px-5 relative z-10">
         <div ref={scrollRef} className="space-y-4 py-6">
           {messages.map((msg) => (
-            msg.isAnalyticsButton ? (
-              <div key={msg.id} className="flex justify-center my-4">
-                <Button
-                  onClick={onOpenAnalytics}
-                  className="gap-2 bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-all shadow-lg rounded-xl px-6 py-3 hover:scale-105 animate-in zoom-in-95 duration-300"
-                  data-testid="button-view-analytics"
-                >
-                  <BarChart3 className="h-5 w-5" />
-                  <span>{t('chat.viewAnalytics')}</span>
-                </Button>
-              </div>
-            ) : (
-              <ChatMessage key={msg.id} {...msg} />
-            )
+            <ChatMessage key={msg.id} {...msg} />
           ))}
         </div>
       </ScrollArea>

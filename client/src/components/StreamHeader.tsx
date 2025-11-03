@@ -42,7 +42,7 @@ export default function StreamHeader() {
             data-testid="button-learn-more"
           >
             <a 
-              href="https://x.com/cz_binance/status/1984835928301719768"
+              href="https://x.com/BNBCHAIN/status/1984213917455761475/video/1"
               target="_blank"
               rel="noopener noreferrer"
             >
