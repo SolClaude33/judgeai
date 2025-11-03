@@ -96,13 +96,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Update last message time
     userLastMessageTime.set(String(sessionKey), now);
 
+    // Check environment variables before attempting AI generation
+    const hasOpenAI = !!process.env.OPENAI_API_KEY;
+    const hasAnthropic = !!process.env.ANTHROPIC_API_KEY;
+    console.log('Environment check - OPENAI_API_KEY:', hasOpenAI ? 'Present' : 'Missing');
+    console.log('Environment check - ANTHROPIC_API_KEY:', hasAnthropic ? 'Present' : 'Missing');
+
     // Generate AI response with proper error handling
     let aiResponse;
     try {
+      console.log('Attempting to import and call AI service...');
       const generateFn = await getGenerateAIResponse();
+      console.log('AI service imported successfully');
       aiResponse = await generateFn(content, language);
+      console.log('AI response generated successfully');
     } catch (aiError: any) {
       console.error('Error generating AI response:', aiError);
+      console.error('Error type:', typeof aiError);
+      console.error('Error message:', aiError?.message);
+      console.error('Error stack:', aiError?.stack);
+      
       // Return a safe error response in JSON format
       const errorMessage = language === 'zh' 
         ? '抱歉，AI 服务暂时不可用。请稍后再试。' 
