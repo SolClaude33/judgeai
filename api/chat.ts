@@ -1,8 +1,19 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { z } from "zod";
 
-// Import from local api folder (Vercel serverless functions can only access files in /api)
-import { generateAIResponse } from "./ai-service";
+// Use dynamic import to avoid module initialization issues in Vercel
+let aiServiceModule: any = null;
+async function getAIResponse() {
+  if (!aiServiceModule) {
+    try {
+      aiServiceModule = await import("./ai-service");
+    } catch (error) {
+      console.error('Failed to import ai-service module:', error);
+      throw error;
+    }
+  }
+  return aiServiceModule.generateAIResponse;
+}
 
 // Track last message time per user (5 second rate limit)
 const userLastMessageTime = new Map<string, number>();
@@ -94,7 +105,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     let aiResponse;
     try {
       console.log('Calling AI service...');
-      aiResponse = await generateAIResponse(content, language);
+      const generateFn = await getAIResponse();
+      aiResponse = await generateFn(content, language);
       console.log('AI response generated successfully');
     } catch (aiError: any) {
       console.error('Error generating AI response:', aiError);
